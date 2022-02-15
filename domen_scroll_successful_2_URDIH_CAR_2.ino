@@ -253,3 +253,4 @@ picture[45][8] = CHSV(hue,sat,BRIGHTNESS);
     FastLED.show();
     delay(80);
   }
+}
