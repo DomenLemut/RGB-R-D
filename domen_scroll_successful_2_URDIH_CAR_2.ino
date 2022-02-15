@@ -246,9 +246,9 @@ picture[43][9] = CHSV(hue,sat,BRIGHTNESS);
 picture[45][8] = CHSV(hue,sat,BRIGHTNESS);
 
   for (int offs = 0; offs < PIC_W; offs++){
-    for(int tmp_x=0; tmp_x < MATRIX_W; tmp_x++ )
-      for(int tmp_y=0; tmp_y < MATRIX_H; tmp_y++ )
-        leds[XY(tmp_x,tmp_y)] = picture[(tmp_x+offs) % PIC_W][tmp_y];
+    for(int tmp_x = 0; tmp_x < MATRIX_W; tmp_x++)
+      for(int tmp_y = 0; tmp_y < MATRIX_H; tmp_y++)
+        leds[XY(tmp_x, tmp_y)] = picture[(tmp_x+offs) % PIC_W][tmp_y];
     hue++;    
     FastLED.show();
     delay(80);
