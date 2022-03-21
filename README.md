@@ -2,7 +2,7 @@
 
 ### discription:
 A school project.     
-The program displays scrooling words of the word you write down manually.
+The program displays scrolling words of the word you write down manually.
 
 
 ### specs:
