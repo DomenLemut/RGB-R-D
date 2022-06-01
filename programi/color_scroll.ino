@@ -33,23 +33,27 @@ void loop(){
     int pointer = 2;
     int up = 1;
     int step = 15;
-    int brightness = 30; //brightness 1-100%
+    int brightness = 80; //brightness 1-100%
+    brightness %= 100;
 
     while(true){
         //move matrix one down
         for(int coll = MATRIX_W - 1; coll > 0; coll--){
             color = leds[XY(coll - 1, 0)];
+            //color *= brightness / 100;
             for(int row = 0; row < MATRIX_H; row++){
                 leds[XY(coll, row)] = color;
             }
         }
 
         //write new first row
+        color = CRGB(
+            rgb[0] * brightness / 100, 
+            rgb[1] * brightness / 100, 
+            rgb[2] * brightness / 100);
+
         for(int row = 0; row < MATRIX_H; row++){
-            leds[XY(0, row)] = CRGB(
-                rgb[0] * brightness / 100,
-                rgb[1] * brightness / 100,
-                rgb[2] * brightness / 100);
+            leds[XY(0, row)] = color;
         }
 
         FastLED.show();
