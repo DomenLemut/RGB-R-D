@@ -1,4 +1,4 @@
-//https://wokwi.com/projects/333202862446215764
+//https://wokwi.com/projects/333262158369391188
 
 #include <FastLED.h> 
 #define DATA_PIN 3
@@ -9,7 +9,7 @@
 
 
 CRGB leds[NUM_LEDS];
-CRGB picture[MATRIX_W][MATRIX_H];
+CRGB color;
 
 uint16_t XY( uint8_t x, uint8_t y)//funkcija iz x,y v spremenljivko i
 {
@@ -26,13 +26,6 @@ void setup() {
    LEDS.addLeds<WS2812,DATA_PIN,GRB>(leds,NUM_LEDS);
 }
 
-int* calcRGB(int bright, int hue){
-    int rgb [3] = {0, 0, 0};
-    rgb[1] = hue;
-    rgb[2] = 100;
-    rgb[3] = 100;
-    return rgb;
-}
 
 void loop(){
 
@@ -40,34 +33,48 @@ void loop(){
     int pointer = 2;
     int up = 1;
     int step = 15;
-    bool go = true;
+    int brightness = 30; //brightness 1-100%
 
-//START find rgb values  (circular rgb)
-        
-//END
     while(true){
+        //move matrix one down
+        for(int coll = MATRIX_W - 1; coll > 0; coll--){
+            color = leds[XY(coll - 1, 0)];
+            for(int row = 0; row < MATRIX_H; row++){
+                leds[XY(coll, row)] = color;
+            }
+        }
 
-        if(up == 1 && go){
+        //write new first row
+        for(int row = 0; row < MATRIX_H; row++){
+            leds[XY(0, row)] = CRGB(
+                rgb[0] * brightness / 100,
+                rgb[1] * brightness / 100,
+                rgb[2] * brightness / 100);
+        }
+
+        FastLED.show();
+        //delay(100);
+        
+
+        //START find next line rgb values  (circular rgb)
+        if(up == 1){
             rgb[pointer] += step;
             if(rgb[pointer] >= 255){
                 pointer++;
                 pointer = pointer % 3;
                 up *= -1;
             }
-            go = false;
         }
-        else if(up == -1 && go){
+        else if(up == -1){
             rgb[pointer] -= step;
             if(rgb[pointer] <= 0){
                 pointer++;
                 pointer = pointer % 3;
                 up *= -1;
             }
-            go = false;
         }
-        go = true;
+        //END
 
-        leds[0] = CHSV(rgb[0], rgb[1], rgb[2]);
-        FastLED.show();
+        
     }
 }
